@@ -1,15 +1,23 @@
 import './App.css';
 import InvoiceTable from './components/InvoiceTable.jsx'
-
-const TEST_DATA = [
-  { id: 0, description: 'Content plan', rate: 30, hours: 4 },
-  { id: 1, description: 'Copy writing', rate: 40, hours: 2 },
-  { id: 2, description: 'Website design', rate: 50, hours: 5 },
-  { id: 3, description: 'Website development', rate: 100, hours: 5 },
-];
+import axios from 'axios'
+import { useEffect, useState } from 'react'
 
 function App() {
-  return <InvoiceTable initialData={TEST_DATA} />
+
+  const [invoiceData, setInvoiceData] = useState([])
+
+  //Get TEST_DATA from server
+
+
+  useEffect(() => {
+    axios.get('/api/invoices')
+    .then((res) => {
+      setInvoiceData(res.data.invoices)
+    })
+  }, [])
+
+  return <InvoiceTable initialData={invoiceData} />
 }
 
 export default App;

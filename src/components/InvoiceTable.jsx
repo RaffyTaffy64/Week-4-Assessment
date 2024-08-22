@@ -2,10 +2,8 @@ import './InvoiceTable.css'
 import TableHeader from './TableHeader.jsx'
 import AddRowButton from './AddRowButton.jsx'
 import TableRow from './TableRow.jsx'
-import { useState } from 'react'
-
-let globalId = 4
-
+import { useState, useEffect } from 'react'
+import axios from 'axios'
 
 function InvoiceTable({ initialData }) {
 
@@ -22,24 +20,34 @@ function InvoiceTable({ initialData }) {
     )
   })
 
+  useEffect(() => {
+    setCurrentData(initialData)
+  }, [initialData])
   // In order to give our "AddRowButton" the ability to add a value to "currentData", we'll need a function:
   const addRow = () => {
     // Create a new object to represent a new "row" or entry in the "currentData" array
     const newRow= {
-      id: globalId,
-      description: "Description",
-      rate: "",
-      hours: ""
+      description: "Description Placeholder",
+      rate: "1",
+      hours: "1"
     }
+
+    axios.post('/api/addInvoice', newRow)
+    .then((res) => {
+      setCurrentData([...currentData, res.data.newInvoice])
+    })
     // Add "newRow" to "currentData"
-    setCurrentData([...currentData, newRow])
-    globalId++
   }
 
   // Delete function:
   const deleteRow = (id) => {
-    const filteredData = currentData.filter((el) => el.id !== id)
-    setCurrentData(filteredData)
+    // const filteredData = currentData.filter((el) => el.id !== id)
+    // setCurrentData(filteredData)
+    axios.delete(`/api/deleteInvoice/${id}`)
+    .then((res) => {
+      // Need to reset currentData to the filtered array
+      setCurrentData(res.data.invoices)
+    })
   }
 
   return (

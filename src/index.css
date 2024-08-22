@@ -40,6 +40,7 @@ h1 {
 button {
   border-radius: 8px;
   border: 1px solid transparent;
+  border-color: rgb(58, 227, 250);
   padding: 0.6em 0.8em;
   font-size: 0.8rem;
   font-weight: 500;
@@ -49,7 +50,8 @@ button {
   transition: border-color 0.25s;
 }
 button:hover {
-  border-color: #ffffff;
+  border-color: #ff00c3;
+  background-color: rgb(0, 213, 255);
 }
 button:focus,
 button:focus-visible {
