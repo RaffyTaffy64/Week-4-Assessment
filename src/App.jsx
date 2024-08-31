@@ -1,23 +1,35 @@
-import './App.css';
-import InvoiceTable from './components/InvoiceTable.jsx'
+import React, { useEffect, useState } from 'react'
+import './App.css'
+import TasksTable from './components/TasksTable'
+import QuoteBox from './components/QuoteBox'
 import axios from 'axios'
-import { useEffect, useState } from 'react'
 
 function App() {
+    const [tasks, setTasks] = useState([])
+    const [quotes, setQuotes] = useState([])
 
-  const [invoiceData, setInvoiceData] = useState([])
+    useEffect(() => {
+        axios.get('/api/tasks')
+            .then((res) => {
+                setTasks(res.data.tasks)
+            })
+            .catch((err) => console.error(err))
 
-  //Get TEST_DATA from server
+        axios.get('/api/quotes')
+            .then((res) => {
+                setQuotes(res.data.quotes)
+            })
+            .catch((err) => console.error(err))
+    }, [])
 
-
-  useEffect(() => {
-    axios.get('/api/invoices')
-    .then((res) => {
-      setInvoiceData(res.data.invoices)
-    })
-  }, [])
-
-  return <InvoiceTable initialData={invoiceData} />
+    return (
+        <div>
+            <QuoteBox quotes={quotes} />
+            <TasksTable tasks={tasks} />
+        </div>
+    )
 }
 
-export default App;
+export default App
+
+
